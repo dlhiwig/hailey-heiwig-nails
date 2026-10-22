@@ -33,7 +33,17 @@
         <option value="sponsorship">Sponsorship / Collaboration</option>
         <option value="other">Other</option>
       </select>
-      <textarea name="message" placeholder="Tell me about what you’re looking for..." rows="5" required></textarea>
+      <input type="text" name="product" id="product" placeholder="Product / Set (auto-filled from shop)" style="display:none;">
+      <select name="size" id="size">
+        <option value="">Preferred Size (optional)</option>
+        <option value="XS">XS (10–12 mm)</option>
+        <option value="S">S (12–14 mm)</option>
+        <option value="M">M (14–16 mm)</option>
+        <option value="L">L (16–18 mm)</option>
+        <option value="XL">XL (18–20+ mm)</option>
+        <option value="unsure">Not sure — help me choose</option>
+      </select>
+      <textarea name="message" id="message" placeholder="Tell me about what you’re looking for..." rows="5" required></textarea>
       <button type="submit" class="btn primary">Send Message</button>
     </form>
     <div class="socials">
@@ -49,12 +59,25 @@
     <p>&copy; 2026 Hailey Heiwig. Wearable art.</p>
   </footer>
   <script>
-    // Pre-select inquiry type from URL param
     const params = new URLSearchParams(window.location.search);
     const type = params.get('inquiry');
+    const product = params.get('product');
+
     if (type) {
       const select = document.getElementById('inquiry_type');
       if (select) select.value = type;
+    }
+
+    if (product) {
+      const productField = document.getElementById('product');
+      const messageField = document.getElementById('message');
+      if (productField) {
+        productField.value = product;
+        productField.style.display = 'block';
+      }
+      if (messageField && !messageField.value) {
+        messageField.value = `I'm interested in the ${product}. `;
+      }
     }
   </script>
 </body>
