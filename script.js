@@ -1,4 +1,4 @@
-// Mobile menu + enhancements
+// Mobile menu + smooth scroll animations
 document.addEventListener('DOMContentLoaded', () => {
   // Hamburger menu
   const hamburger = document.querySelector('.hamburger');
@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
       navLinks.classList.toggle('active');
     });
 
-    // Close menu when a link is clicked
     navLinks.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
         hamburger.classList.remove('active');
@@ -19,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Smooth scroll for any in-page anchors
+  // Smooth scroll for in-page anchors
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       const href = this.getAttribute('href');
@@ -32,4 +31,32 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // Scroll animations
+  const animateElements = document.querySelectorAll(
+    'section, .gallery-item, .service-card, .about-content, h2, .section-subtitle'
+  );
+
+  animateElements.forEach((el, index) => {
+    el.classList.add('animate-on-scroll');
+    // Stagger gallery and card items slightly
+    if (el.classList.contains('gallery-item') || el.classList.contains('service-card')) {
+      const delayClass = `animate-delay-${(index % 4) + 1}`;
+      el.classList.add(delayClass);
+    }
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+  );
+
+  animateElements.forEach(el => observer.observe(el));
 });
